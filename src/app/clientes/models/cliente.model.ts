@@ -9,7 +9,7 @@ export class ClienteModel {
   colonia: string;
   street: string;
   zip: string;
-  dateCreated: Date;
+  dateCreated: Date | string;
 
   constructor(
     name: string,

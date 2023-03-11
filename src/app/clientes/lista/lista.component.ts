@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ClienteModel } from '../models/cliente.model';
-import { map, Observable, pipe, startWith } from 'rxjs';
+import { map, Observable, startWith } from 'rxjs';
 import { FormControl } from '@angular/forms';
+import { UtilsService } from '../../utils/utils.service';
 
 @Component({
   selector: 'app-lista',
@@ -16,7 +17,9 @@ export class ListaComponent implements OnInit {
   filter = new FormControl('', { nonNullable: true });
 
 
-  constructor() {
+  constructor(
+    private utils: UtilsService
+  ) {
     this.fillList(30);
 
     this.clientes$ = this.filter.valueChanges.pipe(
@@ -45,6 +48,59 @@ export class ListaComponent implements OnInit {
     }
   }
 
+  /***
+   * Export Archive
+   * */
+  toCSV() {
+    const filename = 'Clientes';
+    const keyList = [
+      'id',
+      'estado',
+      'name',
+      'municipio',
+      'tel',
+      'colonia',
+      'email',
+      'street',
+      'dateCreated',
+      'zip',
+      'ref',
+    ];
+    const headers: string[] = [
+      'Cliente',
+      'Estado',
+      'Nombre/Apellidos',
+      'Municipio',
+      'Teléfono',
+      'Colonia',
+      'Correo',
+      'Calle',
+      'Fecha de Creación',
+      'Código Postal',
+      'Referencia',
+    ];
+    const data: ClienteModel[] = [];
+
+    // Obtener el arreglo si tiene filtro
+    this.clientes$.subscribe(clientes => {
+      // Cambiar los valores necesarios para
+      clientes.forEach((cliente, idx) => {
+        if (typeof cliente.dateCreated !== 'string') {
+          data.push({
+            ...cliente,
+            id: idx.toString(),
+            dateCreated: cliente.dateCreated.toDateString()
+          });
+        }
+      });
+    });
+
+    this.utils.downloadFileCSV(data, headers, filename, keyList);
+  }
+
+  /***
+   * Table actions
+   * */
   searchMap(cliente: ClienteModel) {
     console.log(cliente);
   }
