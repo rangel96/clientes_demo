@@ -1,0 +1,86 @@
+<!-- Navbar -->
+<div class="row mt-3 ms-2">
+
+  <!-- Title -->
+  <div class="col-auto me-5">
+    <h1>Latencia</h1>
+  </div>
+
+  <!-- Search -->
+  <div class="col my-auto">
+    <div class="input-group">
+          <span class="input-group-text" id="basic-addon1">
+            <i class="fa fa-search"></i>
+          </span>
+      <input type="text" class="form-control" placeholder="Buscar cliente" aria-label="Username" aria-describedby="basic-addon1">
+    </div>
+  </div>
+
+</div>
+
+<!-- Agregar Cliente -->
+<div class="row mt-4">
+  <div class="col">
+    <button class="btn btn-primary">
+      <div class="my-2 mx-3">
+        <i class="fa fa-pencil me-2"></i>
+        Nuevo Registro
+      </div>
+    </button>
+  </div>
+</div>
+
+<!-- Aciones e Información -->
+<div class="row mt-3">
+  <div class="col my-auto">
+    <span class="fw-bold">Información de los Clientes</span>
+  </div>
+  <div class="col-auto">
+    <button class="btn btn-danger me-2">
+      Exportar PDF
+      <i class="fa fa-file-pdf ms-2"></i>
+    </button>
+    <button class="btn btn-success">
+      Exportar Excel
+      <i class="fa fa-file-excel ms-2"></i>
+    </button>
+  </div>
+</div>
+
+<!-- Lista de clientes -->
+<div class="row mt-2">
+  <div class="col table-responsive table-max-height">
+    <table class="table table-bordered align-middle">
+      <thead class="table-light">
+      <tr class="text-center">
+        <th scope="col">Cliente</th>
+        <th scope="col">Nombre / Apellidos</th>
+        <th scope="col">Teléfono</th>
+        <th scope="col">Correo</th>
+        <th scope="col">Estado</th>
+        <th scope="col">Municipio</th>
+        <th scope="col">Código Postal</th>
+        <th colspan="2">Acciones</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of clientList; let idx = index;" class="text-center">
+        <th scope="row">{{ idx + 1 }}</th>
+        <td>{{ item.name }}</td>
+        <td>{{ item.tel }}</td>
+        <td>{{ item.email }}</td>
+        <td>{{ item.estado }}</td>
+        <td>{{ item.municipio }}</td>
+        <td>{{ item.zip }}</td>
+        <td colspan="2">
+          <div class="row px-2">
+            <div class="col p-0 pointer" (click)="searchMap()"><i class="fa fa-search"></i></div>
+            <div class="col p-0 pointer" (click)="editClient()"><i class="fa fa-pen-to-square"></i></div>
+            <div class="col p-0 pointer" (click)="deleteClient()"><i class="fa fa-trash-can"></i></div>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
