@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ClienteModel } from '../models/cliente.model';
+import { map, Observable, pipe, startWith } from 'rxjs';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-lista',
@@ -10,8 +12,20 @@ export class ListaComponent implements OnInit {
 
   clientList: ClienteModel[] = [];
 
-  ngOnInit(): void {
+  clientes$: Observable<ClienteModel[]>;
+  filter = new FormControl('', { nonNullable: true });
+
+
+  constructor() {
     this.fillList(30);
+
+    this.clientes$ = this.filter.valueChanges.pipe(
+      startWith(''),
+      map((text) => this.search(text)),
+    );
+  }
+
+  ngOnInit(): void {
   }
 
   fillList(count: number) {
@@ -25,7 +39,7 @@ export class ListaComponent implements OnInit {
         'León',
         '',
         '',
-        37000,
+        '37000',
       );
       this.clientList.push(cliente);
     }
@@ -39,4 +53,17 @@ export class ListaComponent implements OnInit {
     console.log(`Clic: deleteClient(${ idx })`);
   }
 
+  search(text: string): ClienteModel[] {
+    return this.clientList.filter((cliente: ClienteModel) => {
+      const term = text.toLowerCase();
+      return (
+        cliente.name.toLowerCase().includes(term)
+        || cliente.tel.toLowerCase().includes(term)
+        || cliente.email.toLowerCase().includes(term)
+        || cliente.estado.toLowerCase().includes(term)
+        || cliente.municipio.toLowerCase().includes(term)
+        || cliente.zip.toLowerCase().includes(term)
+      );
+    });
+  }
 }

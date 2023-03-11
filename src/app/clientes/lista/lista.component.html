@@ -9,10 +9,10 @@
   <!-- Search -->
   <div class="col my-auto">
     <div class="input-group">
-          <span class="input-group-text" id="basic-addon1">
+          <span class="input-group-text">
             <i class="fa fa-search"></i>
           </span>
-      <input type="text" class="form-control" placeholder="Buscar cliente" aria-label="Username" aria-describedby="basic-addon1">
+      <input type="text" class="form-control" placeholder="Buscar cliente" [formControl]="filter">
     </div>
   </div>
 
@@ -64,14 +64,14 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let item of clientList; let idx = index;" class="text-center">
+      <tr *ngFor="let item of clientes$ | async; let idx = index;" class="text-center">
         <th scope="row">{{ idx + 1 }}</th>
-        <td>{{ item.name }}</td>
-        <td>{{ item.tel }}</td>
-        <td>{{ item.email }}</td>
-        <td>{{ item.estado }}</td>
-        <td>{{ item.municipio }}</td>
-        <td>{{ item.zip }}</td>
+        <td><ngb-highlight [result]="item.name" [term]="filter.value"></ngb-highlight></td>
+        <td><ngb-highlight [result]="item.tel" [term]="filter.value"></ngb-highlight></td>
+        <td><ngb-highlight [result]="item.email" [term]="filter.value"></ngb-highlight></td>
+        <td><ngb-highlight [result]="item.estado" [term]="filter.value"></ngb-highlight></td>
+        <td><ngb-highlight [result]="item.municipio" [term]="filter.value"></ngb-highlight></td>
+        <td><ngb-highlight [result]="item.zip" [term]="filter.value"></ngb-highlight></td>
         <td colspan="2">
           <div class="row px-2">
             <div class="col p-0 pointer" (click)="searchMap(item)"><i class="fa fa-search"></i></div>

@@ -8,7 +8,7 @@ export class ClienteModel {
   municipio: string;
   colonia: string;
   street: string;
-  zip: number;
+  zip: string;
   dateCreated: Date;
 
   constructor(
@@ -20,7 +20,7 @@ export class ClienteModel {
     municipio: string,
     colonia: string,
     street: string,
-    zip: number
+    zip: string
   ) {
     this.name = name;
     this.tel = tel;

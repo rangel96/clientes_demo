@@ -6,6 +6,7 @@ import { MapComponent } from './map/map.component';
 import { ClienteComponent } from './cliente/cliente.component';
 import { ListaComponent } from './lista/lista.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NgbHighlight } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -16,10 +17,11 @@ import { ReactiveFormsModule } from '@angular/forms';
     ClienteComponent,
     ListaComponent
   ],
-    imports: [
-        CommonModule,
-        ClientesRoutingModule,
-        ReactiveFormsModule,
-    ]
+  imports: [
+    CommonModule,
+    ClientesRoutingModule,
+    ReactiveFormsModule,
+    NgbHighlight,
+  ]
 })
 export class ClientesModule { }
