@@ -5,6 +5,7 @@ import { ClientesRoutingModule } from './clientes-routing.module';
 import { MapComponent } from './map/map.component';
 import { ClienteComponent } from './cliente/cliente.component';
 import { ListaComponent } from './lista/lista.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -15,9 +16,10 @@ import { ListaComponent } from './lista/lista.component';
     ClienteComponent,
     ListaComponent
   ],
-  imports: [
-    CommonModule,
-    ClientesRoutingModule,
-  ]
+    imports: [
+        CommonModule,
+        ClientesRoutingModule,
+        ReactiveFormsModule,
+    ]
 })
 export class ClientesModule { }

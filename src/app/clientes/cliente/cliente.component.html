@@ -1,1 +1,162 @@
-<p>cliente works!</p>
+<div class="row px-3 pt-5">
+
+  <!-- Info -->
+  <div class="col">
+
+    <!-- Title -->
+    <h3 class="border-bottom text-uppercase">Información del cliente</h3>
+
+    <!-- Form -->
+    <form [formGroup]="clientForm">
+      <div class="row">
+
+        <!-- ID -->
+        <div class="col-6">
+          <div class="mb-3">
+            <label class="form-label">ID Cliente</label>
+            <input type="text" class="form-control" [value]="cliente.id" disabled>
+            <!--<div class="form-text">We'll never share your email with anyone else.</div>-->
+          </div>
+        </div>
+
+        <!-- Estado -->
+        <div class="col-6">
+          <div class="mb-3">
+            <label class="form-label">Estado</label>
+            <input type="text" class="form-control" formControlName="estado">
+            <!--<div class="form-text">We'll never share your email with anyone else.</div>-->
+          </div>
+        </div>
+
+        <!-- Nombres / Apellidos -->
+        <div class="col-6">
+          <div class="mb-3">
+            <label class="form-label">Nombres / Apellidos</label>
+            <input type="text" class="form-control" formControlName="name">
+            <!--<div class="form-text">We'll never share your email with anyone else.</div>-->
+          </div>
+        </div>
+
+        <!-- Municipio -->
+        <div class="col-6">
+          <div class="mb-3">
+            <label class="form-label">Municipio</label>
+            <input type="text" class="form-control" formControlName="municipio">
+            <!--<div class="form-text">We'll never share your email with anyone else.</div>-->
+          </div>
+        </div>
+
+        <!-- Teléfono -->
+        <div class="col-6">
+          <div class="mb-3">
+            <label class="form-label">Teléfono</label>
+            <input type="text" class="form-control" formControlName="tel">
+            <!--<div class="form-text">We'll never share your email with anyone else.</div>-->
+          </div>
+        </div>
+
+        <!-- Colonia -->
+        <div class="col-6">
+          <div class="mb-3">
+            <label class="form-label">Colonia</label>
+            <input type="text" class="form-control" formControlName="colonia">
+            <!--<div class="form-text">We'll never share your email with anyone else.</div>-->
+          </div>
+        </div>
+
+        <!-- Correo -->
+        <div class="col-6">
+          <div class="mb-3">
+            <label class="form-label">Correo</label>
+            <input type="text" class="form-control" formControlName="email">
+            <!--<div class="form-text">We'll never share your email with anyone else.</div>-->
+          </div>
+        </div>
+
+        <!-- Calle -->
+        <div class="col-6">
+          <div class="mb-3">
+            <label class="form-label">Calle</label>
+            <input type="text" class="form-control" formControlName="street">
+            <!--<div class="form-text">We'll never share your email with anyone else.</div>-->
+          </div>
+        </div>
+
+        <!-- Fecha de Creación -->
+        <div class="col-6">
+          <div class="mb-3">
+            <label class="form-label">Fecha de Creación</label>
+            <input type="text" class="form-control" [value]="cliente.dateCreated | date: 'MM/dd/yyyy'" disabled>
+            <!--<div class="form-text">We'll never share your email with anyone else.</div>-->
+          </div>
+        </div>
+
+        <!-- Código Postal -->
+        <div class="col-6">
+          <div class="mb-3">
+            <label class="form-label">Código Postal</label>
+            <input type="text" class="form-control" formControlName="zip">
+            <!--<div class="form-text">We'll never share your email with anyone else.</div>-->
+          </div>
+        </div>
+
+        <!-- Referencia -->
+        <div class="col-6">
+          <div class="mb-3">
+            <label class="form-label">Referencia</label>
+            <input type="text" class="form-control" formControlName="ref">
+            <!--<div class="form-text">We'll never share your email with anyone else.</div>-->
+          </div>
+        </div>
+
+        <!-- Button -->
+        <div class="col-6 mt-4 text-center">
+          <button class="btn btn-outline-primary mt-1" type="button">
+            <span class="mx-5">Buscar</span>
+          </button>
+        </div>
+
+      </div>
+    </form>
+  </div>
+
+  <!-- Map -->
+  <div class="col">
+
+    <!-- Title -->
+    <h3 class="border-bottom text-uppercase">Ubicación del cliente</h3>
+
+    <!-- Map -->
+    <app-map></app-map>
+
+    <!-- Coordinadas -->
+    <label class="form-label">Coordinadas</label>
+    <div class="row g-3 align-items-center">
+      <div class="col-auto">
+        <label class="col-form-label">X:</label>
+      </div>
+      <div class="col-3">
+        <input type="text" class="form-control">
+      </div>
+      <div class="col-auto">
+        <label class="col-form-label">Y:</label>
+      </div>
+      <div class="col-3">
+        <input type="text" class="form-control">
+      </div>
+    </div>
+  </div>
+</div>
+
+<br/>
+<br/>
+
+<!-- Submit -->
+<div class="row">
+  <div class="col-3 mx-auto">
+    <div class="d-grid gap-2">
+      <button class="btn btn-success" (click)="updateCliente()">ACEPTAR</button>
+      <button class="btn btn-danger" routerLink="/">CANCELAR</button>
+    </div>
+  </div>
+</div>

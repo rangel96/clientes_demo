@@ -31,16 +31,12 @@ export class ListaComponent implements OnInit {
     }
   }
 
-  searchMap() {
-    console.log('Clic: searchMap()');
+  searchMap(cliente: ClienteModel) {
+    console.log(cliente);
   }
 
-  editClient() {
-    console.log('Clic: editClient()');
-  }
-
-  deleteClient() {
-    console.log('Clic: deleteClient()');
+  deleteClient(idx: number) {
+    console.log(`Clic: deleteClient(${ idx })`);
   }
 
 }
