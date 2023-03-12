@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ClienteModel } from '../models/cliente.model';
-import { map, Observable, startWith } from 'rxjs';
+import { map, Observable, Observer, startWith } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { UtilsService } from '../../utils/utils.service';
 
@@ -11,16 +11,63 @@ import { UtilsService } from '../../utils/utils.service';
 })
 export class ListaComponent implements OnInit {
 
-  clientList: ClienteModel[] = [];
-
-  clientes$: Observable<ClienteModel[]>;
+  clientList: ClienteModel[] = []; // Original
+  clientes$: Observable<ClienteModel[]>; // Filtro
+  private clientesTemp: ClienteModel[] = []; // Temporal
   filter = new FormControl('', { nonNullable: true });
 
+  // Observer
+  getDataObs$: Observer<any> = {
+    next: clientes => {
+      // Vaciar el arreglo
+      this.clientesTemp = [];
+
+      // Cambiar los valores necesarios para
+      clientes.forEach((cliente: ClienteModel, idx: number) => {
+        if (typeof cliente.dateCreated !== 'string') {
+          this.clientesTemp.push({
+            ...cliente,
+            id: idx.toString(),
+            dateCreated: cliente.dateCreated.toDateString()
+          });
+        }
+      });
+    },
+    error: err => console.error(err),
+    complete: () => null,
+  };
+
+  keyList: string[] = [
+    'id',
+    'estado',
+    'name',
+    'municipio',
+    'tel',
+    'colonia',
+    'email',
+    'street',
+    'dateCreated',
+    'zip',
+    'ref',
+  ];
+  headers: string[] = [
+    'Cliente',
+    'Estado',
+    'Nombre/Apellidos',
+    'Municipio',
+    'Teléfono',
+    'Colonia',
+    'Correo',
+    'Calle',
+    'Fecha de Creación',
+    'Código Postal',
+    'Referencia',
+  ];
 
   constructor(
     private utils: UtilsService
   ) {
-    this.fillList(30);
+    this.fillList(10);
 
     this.clientes$ = this.filter.valueChanges.pipe(
       startWith(''),
@@ -51,51 +98,21 @@ export class ListaComponent implements OnInit {
   /***
    * Export Archive
    * */
-  toCSV() {
-    const filename = 'Clientes';
-    const keyList = [
-      'id',
-      'estado',
-      'name',
-      'municipio',
-      'tel',
-      'colonia',
-      'email',
-      'street',
-      'dateCreated',
-      'zip',
-      'ref',
-    ];
-    const headers: string[] = [
-      'Cliente',
-      'Estado',
-      'Nombre/Apellidos',
-      'Municipio',
-      'Teléfono',
-      'Colonia',
-      'Correo',
-      'Calle',
-      'Fecha de Creación',
-      'Código Postal',
-      'Referencia',
-    ];
-    const data: ClienteModel[] = [];
+  toCSV(): void {
+    const filename = 'Reporte_Clientes';
 
     // Obtener el arreglo si tiene filtro
-    this.clientes$.subscribe(clientes => {
-      // Cambiar los valores necesarios para
-      clientes.forEach((cliente, idx) => {
-        if (typeof cliente.dateCreated !== 'string') {
-          data.push({
-            ...cliente,
-            id: idx.toString(),
-            dateCreated: cliente.dateCreated.toDateString()
-          });
-        }
-      });
-    });
+    this.clientes$.subscribe(this.getDataObs$);
 
-    this.utils.downloadFileCSV(data, headers, filename, keyList);
+    this.utils.downloadFileCSV(this.clientesTemp, this.headers, filename, this.keyList);
+  }
+
+  toPDF() {
+    const filename = 'Reporte_Clientes';
+    // Obtener el arreglo si tiene filtro
+    this.clientes$.subscribe(this.getDataObs$);
+
+    this.utils.downloadFilePDF(this.clientesTemp, this.headers, this.keyList, filename);
   }
 
   /***

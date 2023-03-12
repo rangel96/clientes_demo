@@ -20,7 +20,8 @@ export class ClienteModel {
     municipio: string,
     colonia: string,
     street: string,
-    zip: string
+    zip: string,
+    id?: string
   ) {
     this.name = name;
     this.tel = tel;
@@ -32,6 +33,7 @@ export class ClienteModel {
     this.street = street;
     this.zip = zip;
     this.dateCreated = new Date();
+    this.id = id;
   }
 
 }

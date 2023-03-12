@@ -1,5 +1,7 @@
-import { EventEmitter, Injectable } from '@angular/core';
-// import { WorkBook, WorkSheet } from 'xlsx';
+import { Injectable } from '@angular/core';
+import jsPDF from 'jspdf';
+import autoTable, { RowInput } from 'jspdf-autotable';
+
 
 @Injectable({
   providedIn: 'root',
@@ -42,6 +44,22 @@ export class UtilsService {
   //   });
   // }
 
+
+  downloadFilePDF(data: any, headers: string[], keyList: string[], fileName: string): void {
+    const pdf = new jsPDF('l', 'mm', 'A4');
+    const rows: RowInput[] = data.map((row: { [x: string]: string }) => keyList.map(key => row[key]));
+
+    // Creación de Tabla en el objeto pdf
+    autoTable(pdf, {
+      head: [headers],
+      body: rows,
+    });
+
+    // Imprimir tabla
+    pdf.save(`${fileName}.pdf`);
+  }
+
+
   /**
    * It takes in a JSON object, the headers you want to use, and the filename you want to save it as, and then it converts
    * it to a CSV file and downloads it
@@ -57,7 +75,7 @@ export class UtilsService {
     const blob = new Blob(['\ufeff' + csvData], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
 
-    this.downloadFile(url, filename);
+    this.downloadFile(url, filename, '.csv');
   }
 
 
@@ -97,22 +115,22 @@ export class UtilsService {
    * It creates a link element, sets the href attribute to the url, appends the link to the body, clicks the link, and then
    * removes the link from the body
    * @param {string} url - The url of the file you want to download.
-   * @param {string} [fileName] - The name of the file you want to download.
+   * @param {string} fileName - The name of the file you want to download.
    */
-  protected downloadFile(url: string, fileName?: string): void {
+  protected downloadFile(url: string, fileName: string, extension: string): void {
 
     // Create button
     const downloadLink = document.createElement('a');
     const isSafariBrowser = navigator.userAgent.indexOf('Safari') !== -1 && navigator.userAgent.indexOf('Chrome') === -1;
 
-    // If Safari or Chrome open in new window to save file with random filename.
+    // If Safari or Chrome open in a new window to save file with a random filename.
     if (isSafariBrowser) {
       downloadLink.setAttribute('target', '_blank');
     }
 
     // If fileName exist setAttribute download create
     if (fileName) {
-      downloadLink.setAttribute('download', fileName + '.csv');
+      downloadLink.setAttribute('download', fileName + extension);
     }
 
     // Click function and delete button
@@ -153,7 +171,7 @@ export class UtilsService {
   }
 
   /**
-   * It returns a string in the format of YYYY-MM-DD, where the month and day are padded with a leading zero if they are
+   * It returns a string in the format of YYYY-MM-DD, where the month and day are padded with a leading zero if they're
    * less than 10
    * @returns A string in the format of YYYY-MM-DD
    */
