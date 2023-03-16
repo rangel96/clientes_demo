@@ -1,5 +1,6 @@
+import { LngLatLike } from 'mapbox-gl';
+
 export class ClienteModel {
-  id?: string;
   name: string;
   tel: string;
   email: string;
@@ -10,6 +11,8 @@ export class ClienteModel {
   street: string;
   zip: string;
   dateCreated: Date | string;
+  id?: string;
+  mark?: LngLatLike;
 
   constructor(
     name: string,
@@ -21,7 +24,8 @@ export class ClienteModel {
     colonia: string,
     street: string,
     zip: string,
-    id?: string
+    id?: string,
+    mark?: LngLatLike,
   ) {
     this.name = name;
     this.tel = tel;
@@ -34,6 +38,7 @@ export class ClienteModel {
     this.zip = zip;
     this.dateCreated = new Date();
     this.id = id;
+    this.mark = mark;
   }
 
 }

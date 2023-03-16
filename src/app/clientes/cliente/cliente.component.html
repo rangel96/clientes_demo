@@ -23,8 +23,8 @@
         <div class="col-6">
           <div class="mb-3">
             <label class="form-label">Estado</label>
-            <input type="text" class="form-control" formControlName="estado">
-            <!--<div class="form-text">We'll never share your email with anyone else.</div>-->
+            <input type="text" class="form-control" [value]="cliente.estado" disabled>
+            <div *ngIf="fieldInvalid('estado')" class="form-text text-danger">* Campo requerido</div>
           </div>
         </div>
 
@@ -33,7 +33,7 @@
           <div class="mb-3">
             <label class="form-label">Nombres / Apellidos</label>
             <input type="text" class="form-control" formControlName="name">
-            <!--<div class="form-text">We'll never share your email with anyone else.</div>-->
+            <div *ngIf="fieldInvalid('name')" class="form-text text-danger">* Campo requerido</div>
           </div>
         </div>
 
@@ -41,8 +41,8 @@
         <div class="col-6">
           <div class="mb-3">
             <label class="form-label">Municipio</label>
-            <input type="text" class="form-control" formControlName="municipio">
-            <!--<div class="form-text">We'll never share your email with anyone else.</div>-->
+            <input type="text" class="form-control" [value]="cliente.municipio" disabled>
+            <div *ngIf="fieldInvalid('municipio')" class="form-text text-danger">* Campo requerido</div>
           </div>
         </div>
 
@@ -60,7 +60,7 @@
           <div class="mb-3">
             <label class="form-label">Colonia</label>
             <input type="text" class="form-control" formControlName="colonia">
-            <!--<div class="form-text">We'll never share your email with anyone else.</div>-->
+            <div *ngIf="fieldInvalid('colonia')" class="form-text text-danger">* Campo requerido</div>
           </div>
         </div>
 
@@ -69,16 +69,16 @@
           <div class="mb-3">
             <label class="form-label">Correo</label>
             <input type="text" class="form-control" formControlName="email">
-            <!--<div class="form-text">We'll never share your email with anyone else.</div>-->
+            <div *ngIf="fieldInvalid('email')" class="form-text text-danger">* Campo requerido</div>
           </div>
         </div>
 
         <!-- Calle -->
         <div class="col-6">
           <div class="mb-3">
-            <label class="form-label">Calle</label>
+            <label class="form-label">Calle (Ej. Calle Jorge bravo, 1482)</label>
             <input type="text" class="form-control" formControlName="street">
-            <!--<div class="form-text">We'll never share your email with anyone else.</div>-->
+            <div *ngIf="fieldInvalid('street')" class="form-text text-danger">* Campo requerido</div>
           </div>
         </div>
 
@@ -96,23 +96,28 @@
           <div class="mb-3">
             <label class="form-label">Código Postal</label>
             <input type="text" class="form-control" formControlName="zip">
-            <!--<div class="form-text">We'll never share your email with anyone else.</div>-->
+            <div *ngIf="fieldInvalid('zip')" class="form-text text-danger">* Campo requerido</div>
           </div>
         </div>
 
         <!-- Referencia -->
         <div class="col-6">
-          <div class="mb-3">
+          <!--<div class="mb-3">
             <label class="form-label">Referencia</label>
             <input type="text" class="form-control" formControlName="ref">
-            <!--<div class="form-text">We'll never share your email with anyone else.</div>-->
-          </div>
+            &lt;!&ndash;<div class="form-text">We'll never share your email with anyone else.</div>&ndash;&gt;
+          </div>-->
+          <label class="form-text">
+            El botón de buscar se habilita cuando los campos "Colonia", "Calle", Código Postal" están llenos.
+          </label>
         </div>
 
         <!-- Button -->
         <div class="col-6 mt-4 text-center">
-          <button class="btn btn-outline-primary mt-1" type="button">
-            <span class="mx-5">Buscar</span>
+          <button class="btn btn-outline-primary mt-1" type="button"
+                  (click)="searchLocation()"
+                  [disabled]="isValidSearch() || searchLoading">
+            <span class="mx-5">{{searchLoading ? 'Espere' : 'Buscar'}}</span>
           </button>
         </div>
 
@@ -121,16 +126,18 @@
   </div>
 
   <!-- Map -->
-  <div class="col">
+  <section class="col">
 
     <!-- Title -->
     <h3 class="border-bottom text-uppercase">Ubicación del cliente</h3>
 
     <!-- Map -->
-    <app-map></app-map>
+    <div class="map-container mb-2">
+      <app-map [center]="center" [marks]="marker"></app-map>
+    </div>
 
     <!-- Coordinadas -->
-    <label class="form-label">Coordinadas</label>
+    <!--<label class="form-label">Coordinadas</label>
     <div class="row g-3 align-items-center">
       <div class="col-auto">
         <label class="col-form-label">X:</label>
@@ -144,8 +151,8 @@
       <div class="col-3">
         <input type="text" class="form-control">
       </div>
-    </div>
-  </div>
+    </div>-->
+  </section>
 </div>
 
 <br/>
@@ -155,8 +162,45 @@
 <div class="row">
   <div class="col-3 mx-auto">
     <div class="d-grid gap-2">
-      <button class="btn btn-success" (click)="updateCliente()">ACEPTAR</button>
+      <button class="btn btn-success" (click)="addUpdateCliente()">ACEPTAR</button>
       <button class="btn btn-danger" routerLink="/">CANCELAR</button>
     </div>
   </div>
 </div>
+
+
+<!-- Modals -->
+<!-- Select location -->
+<div class="modal fade" id="selectLocation" tabindex="-1" aria-labelledby="selectLocationModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="selectLocationModalLabel">Ubicación</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!--<div class="card mb-2 text-bg-light" *ngFor="let location of directionList" [ngClass]="{'text-bg-light': false}">
+          <div class="card-body">
+            <p class="card-text">{{ location.place_name }}</p>
+          </div>
+        </div>-->
+        <select class="form-select" multiple aria-label="multiple select example" [formControl]="directionControl">
+          <option *ngFor="let location of directionList" [value]="location">
+            {{ location.label }}
+          </option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button"
+                class="btn btn-primary"
+                data-bs-dismiss="modal"
+                (click)="setLocation()"
+                [disabled]="directionControl.invalid"
+        >Aceptar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+

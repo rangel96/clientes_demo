@@ -152,8 +152,8 @@ export class UtilsService {
   openModal(targetName: string): void {
     const button = document.createElement('button');
     button.type = 'button';
-    button.setAttribute('data-toggle', 'modal');
-    button.setAttribute('data-target', targetName);
+    button.setAttribute('data-bs-toggle', 'modal');
+    button.setAttribute('data-bs-target', targetName);
     button.style.visibility = 'hidden';
     document.body.appendChild(button);
     button.click();
@@ -163,7 +163,7 @@ export class UtilsService {
   closeModal(): void {
     const button = document.createElement('button');
     button.type = 'button';
-    button.setAttribute('data-dismiss', 'modal');
+    button.setAttribute('data-bs-dismiss', 'modal');
     button.style.visibility = 'hidden';
     document.body.appendChild(button);
     button.click();

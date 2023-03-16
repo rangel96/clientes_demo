@@ -7,6 +7,8 @@ import { ClienteComponent } from './cliente/cliente.component';
 import { ListaComponent } from './lista/lista.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbHighlight } from '@ng-bootstrap/ng-bootstrap';
+import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
+import { environment } from '../../environments/environment';
 
 
 
@@ -22,6 +24,9 @@ import { NgbHighlight } from '@ng-bootstrap/ng-bootstrap';
     ClientesRoutingModule,
     ReactiveFormsModule,
     NgbHighlight,
+    NgxMapboxGLModule.withConfig({
+      accessToken: environment.apiKey.mapBox, // Optional, can also be set per map (accessToken input of mgl-map)
+    }),
   ]
 })
 export class ClientesModule { }

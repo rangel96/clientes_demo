@@ -45,3 +45,6 @@ Thumbs.db
 *.sh
 Dockerfile
 environment/
+
+# Example - Dev, Files
+*example*

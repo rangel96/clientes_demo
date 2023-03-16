@@ -1,1 +1,11 @@
-<p>map works!</p>
+<mgl-map
+  [style]="'mapbox://styles/mapbox/streets-v12'"
+  [zoom]="zoom"
+  [center]="coordinates"
+>
+  <mgl-marker [lngLat]="coord" *ngFor="let coord of marks">
+    <div class="marker">
+      <i class="fa fa-location-dot fa-2x"></i>
+    </div>
+  </mgl-marker>
+</mgl-map>
