@@ -1,20 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LngLatLike } from 'mapbox-gl';
 
 import { BackendService } from '../../utils/backend.service';
 import { ClienteModel } from '../models/cliente.model';
-import { DirectionsResult } from './directions.example';
 import { UtilsService } from '../../utils/utils.service';
 import { Direction } from '../models/direction_response.model';
+import { ClienteService } from '../services/cliente.service';
 
 @Component({
   selector: 'app-cliente',
   templateUrl: './cliente.component.html',
   styleUrls: ['./cliente.component.scss']
 })
-export class ClienteComponent implements OnInit {
+export class ClienteComponent {
 
   // Forms & Controls
   clientForm!: FormGroup;
@@ -23,7 +23,6 @@ export class ClienteComponent implements OnInit {
 
   directionList: Direction[] = [];
   center: LngLatLike | undefined;
-  marker: [LngLatLike] | undefined;
 
 
   // loadings
@@ -32,18 +31,17 @@ export class ClienteComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private router: ActivatedRoute,
+    private routerActivated: ActivatedRoute,
+    private router: Router,
+
     private backend: BackendService,
     private utils: UtilsService,
+    private clienteSvc: ClienteService,
   ) {
     this.formInit();
     this.getParam();
-    this.directionList = DirectionsResult;
   }
 
-  ngOnInit(): void {
-    // this.utils.openModal('#selectLocation');
-  }
 
   get cliente(): ClienteModel {
     return this.clientForm?.value;
@@ -54,15 +52,17 @@ export class ClienteComponent implements OnInit {
   }
 
   private getParam() {
-    this.router.params.subscribe(
+    this.routerActivated.params.subscribe(
       ({ id }) => {
 
         // Valid param
         if (id === 'nuevo') {
           return;
         }
-
+        const client = this.clienteSvc.getById(id);
+        this.formInit(client);
         this.clientForm.controls['id'].setValue(id);
+        this.center = this.cliente.mark;
       }
     )
   }
@@ -70,20 +70,19 @@ export class ClienteComponent implements OnInit {
   private formInit(cliente?: ClienteModel) {
     this.clientForm = this.fb.group({
       id: [cliente?.id],
-      estado: [cliente?.estado || 'Jalisco', Validators.required],
-      name: [cliente?.name || 'Eric', Validators.required],
-      municipio: [cliente?.municipio || 'Zapopan', Validators.required],
-      tel: [cliente?.tel || '3322291262'],
-      colonia: [cliente?.colonia || 'Paseos del sol', Validators.required],
-      email: [cliente?.email || 'dev@dev.com', [Validators.required, Validators.email]],
-      street: [cliente?.street || 'Calle Jorge bravo, 1482', Validators.required],
+      estado: [cliente?.estado || '', Validators.required],
+      name: [cliente?.name || '', Validators.required],
+      municipio: [cliente?.municipio || '', Validators.required],
+      tel: [cliente?.tel || ''],
+      colonia: [cliente?.colonia || '', Validators.required],
+      email: [cliente?.email || '', [Validators.required, Validators.email]],
+      street: [cliente?.street || '', Validators.required],
       dateCreated: [cliente?.dateCreated || new Date()],
-      zip: [cliente?.zip || '45075', Validators.required],
+      zip: [cliente?.zip || '', Validators.required],
       ref: [cliente?.ref || ''],
       mark: [cliente?.mark || []],
     });
   }
-
 
 
   addUpdateCliente() {
@@ -98,19 +97,24 @@ export class ClienteComponent implements OnInit {
   }
 
   addCliente() {
-    console.log('addCliente');
+    delete this.cliente.id;
+    const id = this.clienteSvc.add(this.cliente);
+    this.router.navigate(['/', id - 1]).then();
   }
 
   updateCliente() {
+    const id: string = this.cliente.id || '';
     delete this.cliente.id;
-    console.log('updateCliente');
+    this.clienteSvc.update(id, this.cliente);
+    this.clientForm.controls['id'].setValue(id);
+    console.log(this.cliente);
   }
 
 
   searchLocation(): void {
     this.searchLoading = true;
     this.directionList = [];
-    const { colonia, street, zip, ref } = this.cliente;
+    const { colonia, street, zip } = this.cliente;
 
     const path = `${ this.backend.getEndpoint('get-forward') }${ street }, ${ zip }${ colonia }`;
     this.backend.Get('positionStack', path).subscribe(
@@ -131,7 +135,6 @@ export class ClienteComponent implements OnInit {
     mark.setValue([longitude, latitude]);
 
     this.center = [longitude, latitude];
-    this.marker = [[longitude, latitude]];
   }
 
 
@@ -141,7 +144,7 @@ export class ClienteComponent implements OnInit {
   }
 
   isValidSearch(): boolean {
-    const { colonia, street, zip, ref } = this.clientForm.controls;
+    const { colonia, street, zip } = this.clientForm.controls;
     return colonia.invalid || street.invalid || zip.invalid;
   }
 

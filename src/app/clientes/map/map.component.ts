@@ -9,7 +9,6 @@ import { LngLatLike } from 'mapbox-gl';
 export class MapComponent implements OnChanges {
 
   @Input() center?: LngLatLike;
-  @Input() marks?: LngLatLike[];
 
   coordinates: LngLatLike = [-99.1331785, 19.4326296]; // Coordinadas del Zócalo de la CDMX
   zoom: [number] = [16];

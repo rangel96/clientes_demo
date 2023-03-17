@@ -3,7 +3,7 @@
   [zoom]="zoom"
   [center]="coordinates"
 >
-  <mgl-marker [lngLat]="coord" *ngFor="let coord of marks">
+  <mgl-marker [lngLat]="coordinates">
     <div class="marker">
       <i class="fa fa-location-dot fa-2x"></i>
     </div>

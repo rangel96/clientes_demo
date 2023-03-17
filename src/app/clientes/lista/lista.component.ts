@@ -1,18 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { ClienteModel } from '../models/cliente.model';
 import { map, Observable, Observer, startWith } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { UtilsService } from '../../utils/utils.service';
+import { ClienteService } from '../services/cliente.service';
 
 @Component({
   selector: 'app-lista',
   templateUrl: './lista.component.html',
   styleUrls: ['./lista.component.scss']
 })
-export class ListaComponent implements OnInit {
+export class ListaComponent {
+
+  @Output() selectClient = new EventEmitter<ClienteModel>();
 
   clientList: ClienteModel[] = []; // Original
-  clientes$: Observable<ClienteModel[]>; // Filtro
+  clientes$!: Observable<ClienteModel[]>; // Filtro
   private clientesTemp: ClienteModel[] = []; // Temporal
   filter = new FormControl('', { nonNullable: true });
 
@@ -65,34 +68,23 @@ export class ListaComponent implements OnInit {
   ];
 
   constructor(
-    private utils: UtilsService
+    private utils: UtilsService,
+    private clienteSvc: ClienteService,
   ) {
-    this.fillList(10);
+    this.getAllClientList();
 
+    this.initSearch();
+  }
+
+  getAllClientList(): void {
+    this.clientList = this.clienteSvc.getAll();
+  }
+
+  initSearch(): void {
     this.clientes$ = this.filter.valueChanges.pipe(
       startWith(''),
       map((text) => this.search(text)),
     );
-  }
-
-  ngOnInit(): void {
-  }
-
-  fillList(count: number) {
-    for (let i = 0; i < count; i++) {
-      const cliente: ClienteModel = new ClienteModel(
-        'Francisco Hernández',
-        '4770000000',
-        'test@dev.com',
-        '',
-        'Guanajuato',
-        'León',
-        '',
-        '',
-        '37000',
-      );
-      this.clientList.push(cliente);
-    }
   }
 
   /***
@@ -119,11 +111,12 @@ export class ListaComponent implements OnInit {
    * Table actions
    * */
   searchMap(cliente: ClienteModel) {
-    console.log(cliente);
+    this.selectClient.emit(cliente);
   }
 
   deleteClient(idx: number) {
-    console.log(`Clic: deleteClient(${ idx })`);
+    this.clientList = this.clienteSvc.delete(idx);
+    this.initSearch();
   }
 
   search(text: string): ClienteModel[] {

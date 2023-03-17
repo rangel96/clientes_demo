@@ -2,11 +2,11 @@
 
   <!-- Navbar -->
   <div class="col-md-8 col-12 mb-3">
-    <app-lista></app-lista>
+    <app-lista (selectClient)="setCliente($event)"></app-lista>
   </div>
 
   <!-- Map -->
-  <div class="col-md col-12">
-    <app-map></app-map>
+  <div class="col-md col-12 p-3">
+    <app-map [center]="selectCliente?.mark"></app-map>
   </div>
 </div>
