@@ -1,12 +1,12 @@
 <div class="row">
 
   <!-- Navbar -->
-  <div class="col-md-8 col-12 mb-3">
+  <div class="col-md-8 col-12 mb-2">
     <app-lista (selectClient)="setCliente($event)"></app-lista>
   </div>
 
   <!-- Map -->
-  <div class="col-md col-12 p-3">
+  <div class="col-md-4 col-12 px-3 map-component">
     <app-map [center]="selectCliente?.mark"></app-map>
   </div>
 </div>

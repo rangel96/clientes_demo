@@ -1,7 +1,7 @@
 <div class="row px-3 pt-5">
 
   <!-- Info -->
-  <div class="col">
+  <div class="col-md mb-3">
 
     <!-- Title -->
     <h3 class="border-bottom text-uppercase">Información del cliente</h3>
@@ -15,7 +15,6 @@
           <div class="mb-3">
             <label class="form-label">ID Cliente</label>
             <input type="text" class="form-control" [value]="cliente.id" disabled>
-            <!--<div class="form-text">We'll never share your email with anyone else.</div>-->
           </div>
         </div>
 
@@ -51,7 +50,6 @@
           <div class="mb-3">
             <label class="form-label">Teléfono</label>
             <input type="text" class="form-control" formControlName="tel">
-            <!--<div class="form-text">We'll never share your email with anyone else.</div>-->
           </div>
         </div>
 
@@ -76,7 +74,7 @@
         <!-- Calle -->
         <div class="col-6">
           <div class="mb-3">
-            <label class="form-label">Calle (Ej. Calle Jorge bravo, 1482)</label>
+            <label class="form-label">Calle (Ej. Calle Jorge bravo)</label>
             <input type="text" class="form-control" formControlName="street">
             <div *ngIf="fieldInvalid('street')" class="form-text text-danger">* Campo requerido</div>
           </div>
@@ -87,7 +85,6 @@
           <div class="mb-3">
             <label class="form-label">Fecha de Creación</label>
             <input type="text" class="form-control" [value]="cliente.dateCreated | date: 'MM/dd/yyyy'" disabled>
-            <!--<div class="form-text">We'll never share your email with anyone else.</div>-->
           </div>
         </div>
 
@@ -113,12 +110,14 @@
         </div>
 
         <!-- Button -->
-        <div class="col-6 mt-4 text-center">
-          <button class="btn btn-outline-primary mt-1" type="button"
-                  (click)="searchLocation()"
-                  [disabled]="isValidSearch() || searchLoading">
-            <span class="mx-5">{{searchLoading ? 'Espere' : 'Buscar'}}</span>
-          </button>
+        <div class="col-6 my-auto text-center px-5">
+          <div class="d-grid gap-2">
+            <button class="btn btn-outline-primary mt-1" type="button"
+                    (click)="searchLocation()"
+                    [disabled]="isValidSearch() || searchLoading">
+              <span>{{searchLoading ? 'Espere' : 'Buscar'}}</span>
+            </button>
+          </div>
         </div>
 
       </div>
@@ -126,7 +125,7 @@
   </div>
 
   <!-- Map -->
-  <section class="col">
+  <section class="col-md mb-3 map-component">
 
     <!-- Title -->
     <h3 class="border-bottom text-uppercase">Ubicación del cliente</h3>
@@ -179,11 +178,6 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <!--<div class="card mb-2 text-bg-light" *ngFor="let location of directionList" [ngClass]="{'text-bg-light': false}">
-          <div class="card-body">
-            <p class="card-text">{{ location.place_name }}</p>
-          </div>
-        </div>-->
         <select class="form-select" multiple aria-label="multiple select example" [formControl]="directionControl">
           <option *ngFor="let location of directionList" [value]="location">
             {{ location.label }}

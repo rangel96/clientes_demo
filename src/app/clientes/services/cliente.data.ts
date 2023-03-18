@@ -1,9 +1,9 @@
-import { ClienteModel } from './models/cliente.model';
+import { ClienteModel } from '../models/cliente.model';
 
 export const CLIENTE_DATA: ClienteModel[] = [
   {
     "name": "Maximillian Diaz",
-    "tel": "657 163 2819",
+    "tel": "6571632819",
     "email": "maximillian657@clientes.com",
     "ref": "",
     "estado": "Jalisco",
@@ -15,7 +15,7 @@ export const CLIENTE_DATA: ClienteModel[] = [
     "mark": [ -103.431575, 20.638913 ]
   }, {
     "name": "Mary Matthews",
-    "tel": "418 792 2039",
+    "tel": "4187922039",
     "email": "givicew921@clientes.com",
     "ref": "",
     "estado": "Nayarit",
@@ -27,7 +27,7 @@ export const CLIENTE_DATA: ClienteModel[] = [
     "mark": [ -104.896269, 21.503662 ]
   }, {
     "name": "Dante Ibarra",
-    "tel": "657 278 7872",
+    "tel": "6572787872",
     "email": "dante657@clientes.com",
     "ref": "",
     "estado": "Guanajuato",
@@ -39,7 +39,7 @@ export const CLIENTE_DATA: ClienteModel[] = [
     "mark": [ -100.752785, 20.421962 ]
   }, {
     "name": "Poppie Zamora",
-    "tel": "373 072 8593",
+    "tel": "3730728593",
     "email": "poppie373@clientes.com",
     "ref": "",
     "estado": "San Luis Potosí",
@@ -51,7 +51,7 @@ export const CLIENTE_DATA: ClienteModel[] = [
     "mark": [ -100.911119, 22.13376 ]
   }, {
     "name": "Joyce Stark",
-    "tel": "235 540 2678",
+    "tel": "2355402678",
     "email": "joyce235@clientes.com",
     "ref": "",
     "estado": "Yucatán",
@@ -63,7 +63,7 @@ export const CLIENTE_DATA: ClienteModel[] = [
     "mark": [ -89.584732, 20.946459 ]
   }, {
     "name": "Ayrton Brady",
-    "tel": "657 243 2051",
+    "tel": "6572432051",
     "email": "ayrton657@clientes.com",
     "ref": "",
     "estado": "Guanajuato",
@@ -75,7 +75,7 @@ export const CLIENTE_DATA: ClienteModel[] = [
     "mark": [ -101.516276, 20.872453 ]
   }, {
     "name": "Cecil Hawkins",
-    "tel": "224 436 8863",
+    "tel": "2244368863",
     "email": "cecil224@clientes.com",
     "ref": "",
     "estado": "Michoacán",
@@ -87,7 +87,7 @@ export const CLIENTE_DATA: ClienteModel[] = [
     "mark": [ -101.504813, 19.071133 ]
   }, {
     "name": "Elmer Davies",
-    "tel": "657 162 1084",
+    "tel": "6571621084",
     "email": "elmer657@clientes.com",
     "ref": "",
     "estado": "Michoacán",
@@ -99,7 +99,7 @@ export const CLIENTE_DATA: ClienteModel[] = [
     "mark": [ -102.274006, 19.987764 ]
   }, {
     "name": "Muhammed Bond",
-    "tel": "223 987 7249",
+    "tel": "2239877249",
     "email": "muhammed223@clientes.com",
     "ref": "",
     "estado": "Nayarit",
@@ -111,7 +111,7 @@ export const CLIENTE_DATA: ClienteModel[] = [
     "mark": [ -104.43282, 21.103811 ]
   }, {
     "name": "Sarah Kane",
-    "tel": "283 660 5431",
+    "tel": "2836605431",
     "email": "sarah283@clientes.com",
     "ref": "",
     "estado": "Guanajuato",

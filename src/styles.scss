@@ -6,3 +6,10 @@
 
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
+
+// Medium devices (tablets, 768px and up)
+@media (max-width: 768px) {
+  .map-component {
+    height: 10em;
+  }
+}
