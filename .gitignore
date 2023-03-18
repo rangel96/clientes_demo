@@ -42,9 +42,8 @@ testem.log
 Thumbs.db
 
 # Enviroments & Dockerfiles
-*.sh
-Dockerfile
-environment/
+/src/environments/
 
 # Example - Dev, Files
 *example*
+

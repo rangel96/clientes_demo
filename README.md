@@ -1,6 +1,10 @@
 # Clientes
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.2.
+## Versions
+- [Angular CLI](https://github.com/angular/angular-cli) version 15.2.2.
+- [Node](https://github.com/angular/angular-cli) version 18.15.0.
+- [npm](https://github.com/angular/angular-cli) version 9.6.1.
+- OS: darwin arm64.
 
 ## Development server
 
